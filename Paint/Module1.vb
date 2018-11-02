@@ -33,7 +33,7 @@ Press Any Key to continue..."
         Dim backColor As ConsoleColor = ConsoleColor.Black
 
         Dim mouseHeld As Boolean = False
-        Dim lastPoint As ConsolePoint = New ConsolePoint(0, 0)
+        Dim lastPoints As New List(Of ConsolePoint)
         Do
             Console.BackgroundColor = backColor
             Dim mousePoint = Mouse.MousePos
@@ -44,9 +44,17 @@ Press Any Key to continue..."
             Dim currentPoint As ConsolePoint = New ConsolePoint(xCord, yCord)
 
             If Control.MouseButtons = MouseButtons.Left And xCord < Console.WindowWidth Then
-                If mouseHeld Then
+                If mouseHeld And lastPoints.Count = 4 Then
+                    Dim P0 = lastPoints(1)
+                    Dim P3 = lastPoints(2)
+
+                    Dim P1 As New ConsolePoint(lastPoints(1).X + (lastPoints(2).X - lastPoints(0).X) / 6, lastPoints(1).Y + (lastPoints(2).Y - lastPoints(0).Y) / 6)
+                    Dim P2 As New ConsolePoint(lastPoints(2).X - (lastPoints(3).X - lastPoints(1).X) / 6, lastPoints(2).Y - (lastPoints(3).Y - lastPoints(1).Y) / 6)
+
                     For t As Decimal = 0 To 1 Step 0.01
-                        Console.SetCursorPosition(lastPoint.X * t + currentPoint.X * (1 - t), lastPoint.Y * t + currentPoint.Y * (1 - t))
+                        Dim x As Integer = (1 - t) ^ 3 * P0.X + 3 * t * (1 - t) ^ 2 * P1.X + 3 * t ^ 2 * (1 - t) * P2.X + t ^ 3 * P3.X
+                        Dim y As Integer = (1 - t) ^ 3 * P0.Y + 3 * t * (1 - t) ^ 2 * P1.Y + 3 * t ^ 2 * (1 - t) * P2.Y + t ^ 3 * P3.Y
+                        Console.SetCursorPosition(x, y)
                         Console.Write("  ")
                     Next
                 End If
@@ -55,14 +63,16 @@ Press Any Key to continue..."
                     mouseHeld = True
                 End If
 
-                lastPoint = currentPoint
+                lastPoints.Add(currentPoint)
+                If lastPoints.Count > 4 Then lastPoints.RemoveAt(0)
 
-                Console.SetCursorPosition(xCord, yCord)
-                Console.Write("  ")
+                'Console.SetCursorPosition(xCord, yCord)
+                'Console.Write("  ")
             End If
 
             If Control.MouseButtons <> MouseButtons.Left Then
                 mouseHeld = False
+                lastPoints = New List(Of ConsolePoint)
             End If
 
 
