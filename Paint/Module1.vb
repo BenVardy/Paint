@@ -10,6 +10,7 @@ Module Module1
         Console.WriteLine(
 "Please turn off quick edit
 Please put in full screen (f11)
+Click the crosses to Calibrate
 Press Enter to exit the program whilst running
 
 Black = Tab
