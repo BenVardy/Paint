@@ -8,7 +8,11 @@ Module Module1
         Console.CursorVisible = False
 
         Console.WriteLine(
-"Please turn off quick edit
+"Please place of the left most moniter
+Please turn off quick edit
+(Click file and then properties and then untick 'quick edit')
+Make the font size as small as possible
+(Also in properties)
 Please put in full screen (f11)
 Click the crosses to Calibrate
 Press Enter to exit the program whilst running
@@ -45,6 +49,7 @@ Press Any Key to continue..."
             Dim currentPoint As ConsolePoint = New ConsolePoint(xCord, yCord)
 
             If Control.MouseButtons = MouseButtons.Left And xCord < Console.WindowWidth Then
+
                 If mouseHeld And lastPoints.Count = 4 Then
                     Dim P0 = lastPoints(1)
                     Dim P3 = lastPoints(2)
@@ -55,6 +60,9 @@ Press Any Key to continue..."
                     For t As Decimal = 0 To 1 Step 0.01
                         Dim x As Integer = (1 - t) ^ 3 * P0.X + 3 * t * (1 - t) ^ 2 * P1.X + 3 * t ^ 2 * (1 - t) * P2.X + t ^ 3 * P3.X
                         Dim y As Integer = (1 - t) ^ 3 * P0.Y + 3 * t * (1 - t) ^ 2 * P1.Y + 3 * t ^ 2 * (1 - t) * P2.Y + t ^ 3 * P3.Y
+
+                        If x >= Console.WindowWidth Then x = Console.WindowWidth - 1
+
                         Console.SetCursorPosition(x, y)
                         Console.Write("  ")
                     Next
